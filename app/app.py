@@ -9,6 +9,9 @@ prices = []
 
 @app.route('/')
 def index():
+    del foodtypes[:]
+    del locations[:]
+    del prices[:]
     return render_template('index.html')
 
 @app.route('/search')
@@ -17,23 +20,17 @@ def search():
 
 @app.route('/nextperson', methods = ['POST'])
 def nextperson():
-    foodtype = request.form['foodtype']
-    foodtypes.append(foodtype)
-    location = request.form['location']
-    locations.append(location)
-    price = request.form['price']
-    prices.append(price)
+    foodtypes.append(request.form['foodtype'])
+    locations.append(request.form['location'])
+    prices.append(request.form['price'])
     print(foodtypes)
     print(locations)
     print(prices)
-    if request.form['btn1'] == "Add another person!":
-    	return redirect('/search')
-    else:
-    	return redirect('/results')
+    if request.form['submit'] == "Add another person!":
+        return redirect('/search')
+    elif request.form['submit'] == "Find me a restaurant!":
+        return redirect('/results')
 
-# @app.route('/finish', methods = ['POST'])
-# def finish():
-#     return redirect('/results')	
 
 @app.route('/getstarted', methods = ['POST'])
 def getstarted():
@@ -43,6 +40,6 @@ def getstarted():
 def results():
     return render_template('results.html')
 
-if __name__=="__main__":    
+if __name__=="__main__":
     app.debug = True
     app.run()
